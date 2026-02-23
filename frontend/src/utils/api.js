@@ -1,6 +1,15 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+// VITE_API_URL에 '/api'가 없으면 자동으로 붙여줍니다
+const getBaseUrl = () => {
+    const envUrl = import.meta.env.VITE_API_URL;
+    if (!envUrl) return '/api';
+    // 마지막에 /가 있으면 제거
+    const cleanUrl = envUrl.replace(/\/$/, '');
+    return cleanUrl.endsWith('/api') ? cleanUrl : `${cleanUrl}/api`;
+};
+
+const API_BASE_URL = getBaseUrl();
 
 const api = axios.create({
     baseURL: API_BASE_URL,
